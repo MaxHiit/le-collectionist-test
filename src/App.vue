@@ -1,10 +1,15 @@
 <script setup>
-import Navbar from "./components/Navbar.vue";
+import { useMovieStore } from "@/stores/moviesStore";
+import Navbar from "@/components/Navbar.vue";
+
+const movieStore = useMovieStore();
+
+movieStore.fetchPopularMovies();
+movieStore.fetchGenresList();
 </script>
 
 <template>
   <Navbar />
-
   <RouterView />
 </template>
 
