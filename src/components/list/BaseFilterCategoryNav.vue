@@ -4,25 +4,20 @@
     <ul
       class="category-navbar-list md:w-48 flex flex-row md:flex-col md:fixed gap-4 h-auto overflow-auto md:overflow-y-auto md:overflow-x-hidden md:top-[96px] md:bottom-0 py-4 px-6 md:pl-12 md:pr-2"
     >
-      <template v-for="(category, index) in categoriesList" :key="index">
-        <FilterCategoryItem :categoryTitle="category" :index="index" />
+      <template v-for="(genre, index) in getGenresList" :key="index">
+        <FilterCategoryItem :genre="genre" :index="index" />
       </template>
     </ul>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
-import FilterCategoryItem from "./FilterCategoryItem.vue";
+import FilterCategoryItem from "@/components/list/FilterCategoryItem.vue";
+import { useMovieStore } from "@/stores/moviesStore";
+import { computed } from "vue";
 
-const categoriesList = ref([
-  "anime",
-  "sci-fi",
-  "adventure",
-  "action",
-  "thriller",
-  "drama",
-]);
+const movieStore = useMovieStore();
+const getGenresList = computed(() => movieStore.genresList);
 </script>
 
 <style scoped>
