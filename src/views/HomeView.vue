@@ -1,7 +1,7 @@
-<script setup></script>
-
 <template>
-  <main>
-    <TheWelcome />
-  </main>
+  <MainView />
 </template>
+
+<script setup>
+import MainView from "../components/BaseMainWallpaper.vue";
+</script>
