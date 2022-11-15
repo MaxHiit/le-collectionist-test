@@ -1,12 +1,15 @@
 import { defineStore } from "pinia";
+import fetcher from "../api/fetcher";
 
 export const useMovieStore = defineStore("moviesStore", {
   state: () => ({
     popularMovies: [],
     singleMovie: {},
     selectedMainMovie: {},
+    page: 1,
     userFavMovies: [],
     genresList: [],
+    loading: false,
     filtersGenreChoice: [],
   }),
   getters: {
@@ -30,11 +33,12 @@ export const useMovieStore = defineStore("moviesStore", {
       return currentArr;
     },
     getGenreName: (state) => {
-      return (genreId) => state.genresList.find((el) => el.id === genreId).name;
+      return (genreId) =>
+        state.genresList.find((el) => el.id === genreId)?.name;
     },
     getMovieIdCast(state) {
       return state.singleMovie.casts
-        .filter((persn) => persn.popularity > 20)
+        ?.filter((persn) => persn.popularity > 5)
         .slice(0, 6);
     },
     getTopMovies(state) {
@@ -46,63 +50,64 @@ export const useMovieStore = defineStore("moviesStore", {
   },
   actions: {
     async fetchPopularMovies() {
-      const apiBaseUrl = "https://api.themoviedb.org/3";
-      const apiKey = import.meta.env.VITE_API_KEY;
+      this.loading = true;
+      const endpoint = `movie/popular?language=en-US&page=${this.page}`;
       try {
-        const res = await fetch(
-          `${apiBaseUrl}/movie/popular?api_key=${apiKey}&language=en-US&page=1`
-        );
-        const data = await res.json();
+        const data = await fetcher(endpoint);
+        const newArrMovies = data.results.map((el) => ({
+          ...el,
+          isFav: false,
+        }));
 
-        const newArrMovie = data.results.map((el) => ({ ...el, isFav: false }));
-
-        this.popularMovies = newArrMovie;
+        this.popularMovies = newArrMovies;
         this.selectedMainMovie = this.popularMovies[0];
+        this.loading = false;
       } catch (error) {
         console.log(error);
       }
     },
     async fetchGenresList() {
-      const apiBaseUrl = "https://api.themoviedb.org/3";
-      const apiKey = import.meta.env.VITE_API_KEY;
+      this.loading = true;
       try {
-        const res = await fetch(
-          `${apiBaseUrl}/genre/movie/list?api_key=${apiKey}&language=en-US`
-        );
-        const data = await res.json();
-
+        const data = await fetcher("genre/movie/list?language=en-US");
         this.genresList = data.genres;
+        this.loading = false;
       } catch (error) {
         console.log(error);
       }
     },
     async fetchSingleMovie(id) {
-      const apiBaseUrl = "https://api.themoviedb.org/3";
-      const apiKey = import.meta.env.VITE_API_KEY;
+      this.loading = true;
       try {
-        const res = await fetch(
-          `${apiBaseUrl}/movie/${id}?api_key=${apiKey}&language=en-US`
-        );
-        const data = await res.json();
-
+        let endpoint = `movie/${id}?language=en-US`;
+        const data = await fetcher(endpoint);
         this.singleMovie = data;
+        this.loading = false;
       } catch (error) {
         console.log(error);
       }
     },
     async fetchMovieIDCast(id) {
-      const apiBaseUrl = "https://api.themoviedb.org/3";
-      const apiKey = import.meta.env.VITE_API_KEY;
+      this.loading = true;
       try {
-        const res = await fetch(
-          `${apiBaseUrl}/movie/${id}/credits?api_key=${apiKey}&language=en-US`
-        );
-        const data = await res.json();
-
+        let endpoint = `movie/${id}/credits?language=en-US`;
+        const data = await fetcher(endpoint);
         this.singleMovie = { ...this.singleMovie, casts: data.cast };
+        this.loading = false;
       } catch (error) {
         console.log(error);
       }
+    },
+    async updatePopularMovies() {
+      this.page++;
+      const endpoint = `movie/popular?language=en-US&page=${this.page}`;
+      const data = await fetcher(endpoint);
+      data.results.map((el) =>
+        this.popularMovies.push({
+          ...el,
+          isFav: false,
+        })
+      );
     },
     getImage(imagePath) {
       const urlBase = "https://image.tmdb.org/t/p/original";
