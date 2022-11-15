@@ -1,12 +1,16 @@
 <template>
+  <div v-if="loading">
+    <Loader />
+  </div>
   <div
+    v-else
     class="absolute top-0 left-0 z-0 w-screen h-auto min-h-screen px-6 pt-20 pb-14 md:px-12"
   >
     <div class="absolute top-0 left-0 z-0 w-screen h-full min-h-screen overlay">
       <img :src="movieStore.getImage(singleMovie.backdrop_path)" />
     </div>
     <GoBackButton />
-    <div class="pt-10 max-w-4xl">
+    <div class="pt-10 max-w-7xl">
       <div class="flex gap-10">
         <div
           class="hidden md:block w-[1440px] h-[450px] rounded-md border-2 border-white"
@@ -55,17 +59,16 @@ import { onBeforeMount } from "vue";
 import { useMovieStore } from "@/stores/moviesStore";
 import { storeToRefs } from "pinia";
 import GoBackButton from "@/components/GoBackButton.vue";
+import Loader from "@/components/LoaderComponent.vue";
 
 const props = defineProps({ id: { type: String, required: true } });
 
 const movieStore = useMovieStore();
 
-const { singleMovie, getMovieIdCast } = storeToRefs(movieStore);
+const { singleMovie, getMovieIdCast, loading } = storeToRefs(movieStore);
 
 onBeforeMount(async () => {
   await movieStore.fetchSingleMovie(props.id);
   await movieStore.fetchMovieIDCast(props.id);
 });
 </script>
-
-<style></style>

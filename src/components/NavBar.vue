@@ -1,7 +1,6 @@
-<!-- eslint-disable-next-line vue/multi-word-component-names -->
 <template>
   <header
-    class="sticky top-0 left-0 z-10"
+    class="sticky top-0 left-0 z-20"
     :class="{ isSticky: scrollPosition > 0 }"
   >
     <nav class="flex items-center h-16 px-6 md:px-12">

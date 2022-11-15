@@ -11,5 +11,3 @@
 <script setup>
 import { ArrowLeftIcon } from "@heroicons/vue/24/solid";
 </script>
-
-<style></style>

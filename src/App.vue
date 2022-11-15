@@ -1,16 +1,17 @@
 <script setup>
+import { onMounted } from "vue";
 import { useMovieStore } from "@/stores/moviesStore";
-import Navbar from "@/components/Navbar.vue";
+import NavBar from "@/components/NavBar.vue";
 
 const movieStore = useMovieStore();
 
-movieStore.fetchPopularMovies();
-movieStore.fetchGenresList();
+onMounted(() => {
+  movieStore.fetchPopularMovies();
+  movieStore.fetchGenresList();
+});
 </script>
 
 <template>
-  <Navbar />
+  <NavBar />
   <RouterView />
 </template>
-
-<style scoped></style>

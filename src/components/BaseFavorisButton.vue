@@ -1,7 +1,7 @@
 <template>
   <button
     :title="movieItem.isFav ? 'delete from favorites' : 'add to favorites'"
-    class="p-2 ml-5 absolute top-0 right-0 ease-in-out duration-300 hover:text-red-500 hover:animate-pulse"
+    class="p-2 ml-5 absolute top-0 right-0 z-10 ease-in-out duration-300 hover:text-red-500 hover:animate-pulse"
     @click="movieStore.updateFavMovie(movieItem)"
   >
     <HeartIcon

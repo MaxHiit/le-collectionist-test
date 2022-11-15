@@ -1,24 +1,22 @@
 <template>
-  <div class="md:ml-[224px] px-6 py-6 md:pr-12 w-full">
-    <TransitionGroup
-      name="list"
-      tag="div"
-      class="w-full grid grid-cols-5 auto-rows-max gap-9 md:gap-11"
-    >
-      <BaseMovieCard
-        v-for="(movie, index) in moviesList"
-        :key="index"
-        :index="index"
-        :movie="movie"
-      />
-    </TransitionGroup>
-  </div>
+  <TransitionGroup
+    name="list"
+    tag="div"
+    class="w-full grid grid-cols-5 auto-rows-max gap-9 md:gap-12"
+  >
+    <BaseMovieCard
+      v-for="(movie, index) in moviesList"
+      :key="index"
+      :index="index"
+      :movie="movie"
+    />
+  </TransitionGroup>
 </template>
 
 <script setup>
 import BaseMovieCard from "@/components/BaseMovieCard.vue";
 
-const props = defineProps(["moviesList"]);
+defineProps(["moviesList"]);
 </script>
 
 <style>

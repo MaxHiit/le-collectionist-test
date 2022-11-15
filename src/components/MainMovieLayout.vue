@@ -19,17 +19,13 @@
       <p class="text-xl">{{ getMainMovie.release_date }}</p>
     </div>
     <div class="flex items-center">
-      <!-- 
-        // FIXME 
-        when i add the router link on the button i have an error "Missing required param "id" " but i don't know why if you have an explanation?
-      -->
-      <!-- <router-link :to="{ name: 'movieView', params: { id: getMainMovie.id } }"> -->
-      <button
-        class="rounded-3xl px-10 py-2 bg-purple-500 hover:bg-purple-800 hover:scale-110 duration-300 ease-in-out"
-      >
-        <span class="uppercase">voir plus</span>
-      </button>
-      <!-- </router-link> -->
+      <router-link :to="{ name: 'movieView', params: { id: getMainMovie.id } }">
+        <button
+          class="rounded-3xl px-10 py-2 bg-purple-500 hover:bg-purple-800 hover:scale-110 duration-300 ease-in-out"
+        >
+          <span class="uppercase">voir plus</span>
+        </button>
+      </router-link>
       <button
         :title="
           getMainMovie.isFav ? 'delete from favorites' : 'add to favorites'
